@@ -11,11 +11,12 @@
 import { registerSettings } from './module/settings.js'
 import { preloadTemplates } from './module/preloadTemplates.js'
 import { LancerActorSheet } from './module/actor-sheet.js'
-import { LancerGame } from './module/lancer-game.js'
+import { LancerGame, LancerActor } from './module/lancer-game.js'
 
 /* ------------------------------------ */
 /* Initialize system					*/
 /* ------------------------------------ */
+
 Hooks.once('init', async function() {
 	console.log(`Initializing LANCER RPG System 
 	╭╮╱╱╭━━━┳━╮╱╭┳━━━┳━━━┳━━━╮ 
@@ -27,8 +28,11 @@ Hooks.once('init', async function() {
 
 	// Assign custom classes and constants here
 	// Create a Lancer namespace within the game global
+
+
 	(game as LancerGame).lancer = {
-		rollAttackMacro
+		rollAttackMacro,
+		attackRoll
 	};
 
 	// Register custom system settings
@@ -58,6 +62,40 @@ Hooks.once('ready', function() {
 });
 
 // Add any additional hooks if necessary
+
+
+enum AttackType {
+	Ranged,
+	Melee,
+	Tech
+}
+
+function attackRoll(type: AttackType, attacker: LancerActor, target: LancerActor, bonus: number, accuracy: number) {
+
+	let acc_str = ''
+	if (accuracy > 0) acc_str = ` + ${accuracy}d6kh1`
+	else if (accuracy < 0) acc_str = ` - ${accuracy}d6kh1`
+	
+	const roll = new Roll(`1d20+${bonus}${acc_str}`).roll()
+	
+
+	console.log(roll);
+
+	const result = roll.total
+
+	const targetStats = target.data.data.mech
+
+	const rollTarget = type === AttackType.Tech ? targetStats.evasion.value : targetStats.edef.value
+
+	console.log(result);
+	console.log(rollTarget);
+
+	return result >= rollTarget
+
+}
+
+
+
 
 
 
