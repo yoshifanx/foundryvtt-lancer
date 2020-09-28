@@ -24,7 +24,4 @@
   "manifest": "https://raw.githubusercontent.com/Eranziel/foundryvtt-lancer/master/src/system.json",
   "download": "https://github.com/Eranziel/foundryvtt-lancer/raw/v0.1.7/package/lancer-v0.1.7.zip",
   "license": "GNU GPLv3",
-  "readme": "",
-  "bugs": "",
-  "changelog": ""
 }
